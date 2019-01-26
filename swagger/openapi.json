@@ -235,6 +235,62 @@
         }
       }
     },
+    "/api/v1/users/search": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "友達検索",
+        "description": "",
+        "operationId": "searchUser",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "type": "string",
+            "description": "firebase token"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "properties": {
+                "search_name": {
+                  "type": "string",
+                  "example": "yaya"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "friend_id": {
+                  "type": "integer",
+                  "format": "int64"
+                },
+                "friend_name": {
+                  "type": "string"
+                },
+                "friend_profile_img": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/items": {
       "get": {
         "tags": [
@@ -960,6 +1016,179 @@
               "type": "array",
               "items": {
                 "$ref": "#/definitions/Message"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/relationships": {
+      "get": {
+        "tags": [
+          "Relationship"
+        ],
+        "summary": "友達の取得",
+        "description": "",
+        "operationId": "getRelationships",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "type": "string",
+            "description": "firebase token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Relationship"
+        ],
+        "summary": "友達の申請",
+        "description": "",
+        "operationId": "createRelationship",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "type": "string",
+            "description": "firebase token"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "properties": {
+                "friend_id": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "create": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Relationship"
+        ],
+        "summary": "友達の承認",
+        "description": "",
+        "operationId": "updateRelationship",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "type": "string",
+            "description": "firebase token"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "properties": {
+                "friend_id": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "update": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Relationship"
+        ],
+        "summary": "友達の削除",
+        "description": "",
+        "operationId": "destroyRelationship",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "type": "string",
+            "description": "firebase token"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "properties": {
+                "friend_id": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "destroy": {
+                  "type": "boolean"
+                }
               }
             }
           }
