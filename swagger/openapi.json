@@ -1481,7 +1481,8 @@
           "type": "string"
         },
         "lendable": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "/api/v1/item にPOSTした時は自動的にtrueになって貸せるよリストに追加"
         },
         "created_at": {
           "type": "string"
