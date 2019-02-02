@@ -228,6 +228,9 @@
                 },
                 "borrow_num": {
                   "type": "integer"
+                },
+                "over_deadline_num": {
+                  "type": "integer"
                 }
               }
             }
@@ -292,38 +295,6 @@
       }
     },
     "/api/v1/items": {
-      "get": {
-        "tags": [
-          "Item"
-        ],
-        "summary": "アイテムの一覧取得",
-        "operationId": "getItems",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "header",
-            "name": "token",
-            "type": "string",
-            "description": "firebase token"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Item"
-              }
-            }
-          }
-        }
-      },
       "post": {
         "tags": [
           "Item"
@@ -371,7 +342,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Item"
+                "$ref": "#/definitions/ItemDetail"
               }
             }
           }
@@ -405,7 +376,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Item"
+                "$ref": "#/definitions/ItemDetail"
               }
             }
           }
@@ -458,7 +429,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Item"
+                "$ref": "#/definitions/ItemDetail"
               }
             }
           }
@@ -504,21 +475,20 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Item"
+                "$ref": "#/definitions/ItemDetail"
               }
             }
           }
         }
       }
     },
-    "/api/v1/transactions": {
+    "/api/v1/lendable_items": {
       "get": {
         "tags": [
-          "Transaction"
+          "Item"
         ],
-        "summary": "取引の一覧取得",
-        "description": "",
-        "operationId": "getTransactions",
+        "summary": "貸せるアイテムの一覧取得",
+        "operationId": "getLendableItems",
         "consumes": [
           "application/json"
         ],
@@ -537,14 +507,21 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Transaction"
+              "type": "object",
+              "properties": {
+                "item": {
+                  "$ref": "#/definitions/ItemDetail"
+                },
+                "budge_num": {
+                  "type": "integer"
+                }
               }
             }
           }
         }
-      },
+      }
+    },
+    "/api/v1/transactions": {
       "post": {
         "tags": [
           "Transaction"
@@ -597,43 +574,26 @@
               "type": "object",
               "properties": {
                 "id": {
-                  "type": "integer"
+                  "type": "integer",
+                  "description": "transactionのid"
                 },
-                "name": {
-                  "example": "item name"
-                },
-                "item_img": {
-                  "example": "http://~~"
-                },
-                "user_id": {
-                  "type": "integer"
+                "item": {
+                  "$ref": "#/definitions/ItemResponse"
                 },
                 "deadline": {
                   "example": "2018-01-01"
                 },
-                "description": {
-                  "example": "よろしく"
-                },
                 "status": {
                   "type": "integer"
                 },
-                "lender_id": {
+                "borrower_user": {
+                  "$ref": "#/definitions/UserResponse"
+                },
+                "message_num": {
                   "type": "integer"
                 },
-                "lender_name": {
-                  "example": "kobasato"
-                },
-                "lender_profile_img": {
-                  "example": "http://~~"
-                },
-                "borrower_id": {
+                "fire_budge": {
                   "type": "integer"
-                },
-                "borrower_name": {
-                  "example": "yaya"
-                },
-                "borrower_profile_img": {
-                  "example": "http://~~"
                 },
                 "created_at": {
                   "example": "2018-01-01"
@@ -698,43 +658,26 @@
               "type": "object",
               "properties": {
                 "id": {
-                  "type": "integer"
+                  "type": "integer",
+                  "description": "transactionのid"
                 },
-                "name": {
-                  "example": "item name"
-                },
-                "item_img": {
-                  "example": "http://~~"
-                },
-                "user_id": {
-                  "type": "integer"
+                "item": {
+                  "$ref": "#/definitions/ItemResponse"
                 },
                 "deadline": {
                   "example": "2018-01-01"
                 },
-                "description": {
-                  "example": "よろしく"
-                },
                 "status": {
                   "type": "integer"
                 },
-                "lender_id": {
+                "borrower_user": {
+                  "$ref": "#/definitions/UserResponse"
+                },
+                "message_num": {
                   "type": "integer"
                 },
-                "lender_name": {
-                  "example": "kobasato"
-                },
-                "lender_profile_img": {
-                  "example": "http://~~"
-                },
-                "borrower_id": {
+                "fire_budge": {
                   "type": "integer"
-                },
-                "borrower_name": {
-                  "example": "yaya"
-                },
-                "borrower_profile_img": {
-                  "example": "http://~~"
                 },
                 "created_at": {
                   "example": "2018-01-01"
@@ -825,43 +768,26 @@
               "type": "object",
               "properties": {
                 "id": {
-                  "type": "integer"
+                  "type": "integer",
+                  "description": "transactionのid"
                 },
-                "name": {
-                  "example": "item name"
-                },
-                "item_img": {
-                  "example": "http://~~"
-                },
-                "user_id": {
-                  "type": "integer"
+                "item": {
+                  "$ref": "#/definitions/ItemResponse"
                 },
                 "deadline": {
                   "example": "2018-01-01"
                 },
-                "description": {
-                  "example": "よろしく"
-                },
                 "status": {
                   "type": "integer"
                 },
-                "lender_id": {
+                "borrower_user": {
+                  "$ref": "#/definitions/UserResponse"
+                },
+                "message_num": {
                   "type": "integer"
                 },
-                "lender_name": {
-                  "example": "kobasato"
-                },
-                "lender_profile_img": {
-                  "example": "http://~~"
-                },
-                "borrower_id": {
+                "fire_budge": {
                   "type": "integer"
-                },
-                "borrower_name": {
-                  "example": "yaya"
-                },
-                "borrower_profile_img": {
-                  "example": "http://~~"
                 },
                 "created_at": {
                   "example": "2018-01-01"
@@ -904,35 +830,32 @@
               "type": "object",
               "properties": {
                 "id": {
+                  "type": "integer",
+                  "description": "transactionのid"
+                },
+                "item": {
+                  "$ref": "#/definitions/ItemResponse"
+                },
+                "deadline": {
+                  "example": "2018-01-01"
+                },
+                "status": {
                   "type": "integer"
                 },
-                "name": {
-                  "example": "item name"
-                },
-                "item_img": {
-                  "example": "http://~~"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "よろ"
-                },
-                "lender_user_name": {
-                  "example": "kobasato"
-                },
-                "lender_user_profile_img": {
-                  "example": "http://~~"
-                },
-                "borrower_user_name": {
-                  "example": "yaya"
-                },
-                "borrower_user_profile_img": {
-                  "example": "http://~~"
+                "borrower_user": {
+                  "$ref": "#/definitions/UserResponse"
                 },
                 "message_num": {
-                  "example": "1"
+                  "type": "integer"
                 },
                 "fire_budge": {
-                  "type": "boolean"
+                  "type": "integer"
+                },
+                "created_at": {
+                  "example": "2018-01-01"
+                },
+                "updated_at": {
+                  "example": "2018-01-01"
                 }
               }
             }
@@ -969,35 +892,32 @@
               "type": "object",
               "properties": {
                 "id": {
+                  "type": "integer",
+                  "description": "transactionのid"
+                },
+                "item": {
+                  "$ref": "#/definitions/ItemResponse"
+                },
+                "deadline": {
+                  "example": "2018-01-01"
+                },
+                "status": {
                   "type": "integer"
                 },
-                "name": {
-                  "example": "item name"
-                },
-                "item_img": {
-                  "example": "http://~~"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "よろ"
-                },
-                "lender_user_name": {
-                  "example": "kobasato"
-                },
-                "lender_user_profile_img": {
-                  "example": "http://~~"
-                },
-                "borrower_user_name": {
-                  "example": "yaya"
-                },
-                "borrower_user_profile_img": {
-                  "example": "http://~~"
+                "borrower_user": {
+                  "$ref": "#/definitions/UserResponse"
                 },
                 "message_num": {
-                  "example": "1"
+                  "type": "integer"
                 },
                 "fire_budge": {
-                  "type": "boolean"
+                  "type": "integer"
+                },
+                "created_at": {
+                  "example": "2018-01-01"
+                },
+                "updated_at": {
+                  "example": "2018-01-01"
                 }
               }
             }
@@ -1179,7 +1099,7 @@
         "tags": [
           "Relationship"
         ],
-        "summary": "友達の取得",
+        "summary": "友達の一覧取得",
         "description": "",
         "operationId": "getRelationships",
         "consumes": [
@@ -1200,9 +1120,17 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/User"
+              "type": "object",
+              "properties": {
+                "friend_id": {
+                  "example": 1
+                },
+                "friend_name": {
+                  "example": "satoshi"
+                },
+                "friend_profile_img": {
+                  "example": "http://~~~"
+                }
               }
             }
           }
@@ -1254,52 +1182,6 @@
           }
         }
       },
-      "patch": {
-        "tags": [
-          "Relationship"
-        ],
-        "summary": "友達の承認",
-        "description": "",
-        "operationId": "updateRelationship",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "header",
-            "name": "token",
-            "type": "string",
-            "description": "firebase token"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "properties": {
-                "friend_id": {
-                  "type": "integer"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "update": {
-                  "type": "boolean"
-                }
-              }
-            }
-          }
-        }
-      },
       "delete": {
         "tags": [
           "Relationship"
@@ -1339,6 +1221,54 @@
               "type": "object",
               "properties": {
                 "destroy": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/relationships/approve": {
+      "patch": {
+        "tags": [
+          "Relationship"
+        ],
+        "summary": "友達の承認",
+        "description": "",
+        "operationId": "updateRelationship",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "type": "string",
+            "description": "firebase token"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "properties": {
+                "friend_id": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "update": {
                   "type": "boolean"
                 }
               }
@@ -1460,6 +1390,44 @@
         "name": "User"
       }
     },
+    "UserResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "profile_img": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "User"
+      }
+    },
+    "ItemResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "item_img": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "user": {
+          "$ref": "#/definitions/UserResponse"
+        }
+      }
+    },
     "Item": {
       "type": "object",
       "properties": {
@@ -1481,13 +1449,32 @@
           "type": "string"
         },
         "lendable": {
-          "type": "boolean",
-          "description": "/api/v1/item にPOSTした時は自動的にtrueになって貸せるよリストに追加"
+          "type": "boolean"
         },
         "created_at": {
           "type": "string"
         },
         "updated_at": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "Item"
+      }
+    },
+    "ItemDetail": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "item_img": {
+          "type": "string"
+        },
+        "description": {
           "type": "string"
         }
       },

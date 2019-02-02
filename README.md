@@ -1,15 +1,15 @@
 ## swagger-all-in-one-docker-container
-### Overview
-I docker composed Swagger Editor, Swagger UI, Swagger mock api server(openapi: 3.x) and nginx to handle them more easily.
-If you want to write swagger spec as `swagger: "2.0"`, use `swagger2.0` branch.
-There is a sample swagger spec in this so the Editor, UI and the mock API server will run without any configuration from the start.
-All you need to do is edit the swagger spec, save as openapi.json, and restart docker. Voila, UI and the mock API server are updated.
+### 概要
+Swagger EditorとSwagger UIとSwaggerのモックAPIサーバー(openapi: 3.x)を手軽に同時に環境に立ち上げられるようdocker-compose化してみました
+もしswagger specを`swagger: "2.0"`形式で書きたい場合は`swagger2.0`branchをお使いください
+このコンテナには初期でサンプルのswagger specが入っていて、editor, ui, api, nginxが初期状態で立ち上がり、最初から設定無しで起動出来るようになってます
+あとはEditorでopenapi.jsonを保存しコンテナを立ち上げ直すだけで、UIとモックAPIサーバーを最新に更新していくことが出来ます
 
-### How to Run
-```
+### 起動方法
+```yaml
 docker-compose up -d
 
-It will look like this.
+こんな感じで起動します
 docker-compose ps
          Name                       Command               State           Ports
 ----------------------------------------------------------------------------------------
@@ -19,45 +19,45 @@ swagger-nginx    nginx -g daemon off;             Up      80/tcp, 0.0.0.0:8084->
 swagger-ui       sh /usr/share/nginx/docker ...   Up      0.0.0.0:8082->8080/tcp
 ```
 
-### How to Use
-1. Edit swagger spec with swagger-editor
-2. Save swagger spec as json from swagger-editor File menu
-3. Move and save the json file as `swagger/openapi.json`
-4. Execute `docker-compose restart` and swagger-ui and swagger-api(mock server) will be updated
-5. If you want to read an external openapi.json file, import the file from swagger-editor `File > Import File` menu.
+### 使い方
+1. swagger-editorでswagger specを編集
+2. swagger specをjson形式でswagger-editorの画面から保存
+3. 保存したjsonを`swagger/openapi.json`に移動
+4. `docker-compose restart`でswagger-uiとswagger-api(mock server)に変更が反映される
+5. もしswagger-editorで外部ファイルを読み込みたい場合は、画面内`File > Import File`から読み込む
 
-### Heads-up
-- When the UI is referenced as `http://localhost:8082/`, cache might be used even the changes are made in swagger files. So it may be better to refference as `http://127.0.0.1:8082/`(api, too.)
-- When swagger-api failed to run, it's likely that api server failed to run because the openapi.json was not properly read. So use `docker logs` command and get rid of the cause then restart it again.
-- If you want to access swagger-api from other domains(CORS), access swagger-api through swagger-nginx.
+### 注意
+- `http://localhost:8082/`で参照するとキャッシュで変更が反映されない場合があるので`http://127.0.0.1:8082/`で参照した方が良い(apiも同様)
+- swagger-apiの起動に失敗した場合は、`swagger/openapi.json`からモックAPIの立ち上げに失敗した可能性が高いので、`docker logs`などでデバッグし、openapi.jsonを直してから立ち上げ直す
+- swagger-apiを他ドメインからアクセスしたい場合は(CORS対策)、swagger-nginx経由でswagger-apiにアクセスする
 
 ### swagger-editor
-- Can edit swagger spec
-- Can export swagger spec as json, yaml and etc. swagger-ui can read the files and they can be beautifly referenced as documentation. apisprout can read the yml and json then it can serve the mock API.
+- swagger specを編集出来る
+- swagger specはjson, yaml形式などにしてエクスポート出来て、swagger-uiから参照するとドキュメントとして見れる。swagger-apiからjsonを参照するとモックAPIサーバーになる
 
 ### swagger-ui
-- Can referrence the documentation from swagger spec.
-- swagger spec can be assined from json file path or API_URL path.
+- swagger specをドキュメントとして見れる
+- swagger specは環境変数でjsonファイルまたは、API_URLからjsonを参照できる
 ```
 environment:
   SWAGGER_JSON: /openapi.json
   # API_URL: ""
 ```
-- ./swagger/openapi.json is refferenced in this repository
+- このレポジトリの./swagger/openapi.jsonが参照先になっている
 
 ### swagger-api(apisprout)
-- Internally using [apisprout](https://github.com/danielgtaylor/apisprout) in docker.
-- swagger spec is compatible with `openapi: 3.x`.
-- ./swagger/openapi.json is also refferenced from api in this repository.
-- However, apisprout can not add `Access-Control-Allow-Origin` to Header so I put nginx in front of swagger-api and add it to Header then proxy to swagger-api.(To make it accessable from othe domains. CORS.)
+- 内部的に[apisprout](https://github.com/danielgtaylor/apisprout)を使用しています
+- swagger specは`openapi: 3.x`に対応しています
+- こちらも./swagger/openapi.jsonが参照先になっている
+- ただしapisproutがヘッダーに`Access-Control-Allow-Origin`を付けてくれないので、前段にnginxを置き、ヘッダーを付与してAPIにプロキシしています。(他ドメインからAPIにアクセスできないと不便なので。CORS対策。)
 
 ### swagger-nginx
-- Placed to modify Header.
-- Mock API(swagger-api) can be accessed from `8084` port via nginx.
-- Of course, you can use the api from curl, etc.
+- ヘッダー修正用に配置
+- `8084`portでnginx経由でモックAPI(swagger-api)にアクセス出来ます。
+- curl等で叩けます
 
   ```json
-  * example
+  * 例
   curl -i -X GET http://127.0.0.1:8084/pets/1 -H "accept: application/json"
 
   HTTP/1.1 200 OK
