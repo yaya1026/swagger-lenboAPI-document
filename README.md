@@ -13,7 +13,6 @@ docker-compose up -d
 docker-compose ps
          Name                       Command               State           Ports
 ----------------------------------------------------------------------------------------
-swagger-api      /usr/local/bin/apisprout / ...   Up      0.0.0.0:8083->8000/tcp
 swagger-editor   sh /usr/share/nginx/docker ...   Up      0.0.0.0:8081->8080/tcp
 swagger-nginx    nginx -g daemon off;             Up      80/tcp, 0.0.0.0:8084->8084/tcp
 swagger-ui       sh /usr/share/nginx/docker ...   Up      0.0.0.0:8082->8080/tcp
@@ -44,36 +43,3 @@ environment:
   # API_URL: ""
 ```
 - このレポジトリの./swagger/openapi.jsonが参照先になっている
-
-### swagger-api(apisprout)
-- 内部的に[apisprout](https://github.com/danielgtaylor/apisprout)を使用しています
-- swagger specは`openapi: 3.x`に対応しています
-- こちらも./swagger/openapi.jsonが参照先になっている
-- ただしapisproutがヘッダーに`Access-Control-Allow-Origin`を付けてくれないので、前段にnginxを置き、ヘッダーを付与してAPIにプロキシしています。(他ドメインからAPIにアクセスできないと不便なので。CORS対策。)
-
-### swagger-nginx
-- ヘッダー修正用に配置
-- `8084`portでnginx経由でモックAPI(swagger-api)にアクセス出来ます。
-- curl等で叩けます
-
-  ```json
-  * 例
-  curl -i -X GET http://127.0.0.1:8084/pets/1 -H "accept: application/json"
-
-  HTTP/1.1 200 OK
-  Server: nginx/1.15.3
-  Date: Thu, 04 Oct 2018 07:58:19 GMT
-  Content-Type: application/json
-  Content-Length: 49
-  Connection: keep-alive
-  Access-Control-Allow-Origin: *
-  Access-Control-Allow-Methods: POST, GET, PATCH, DELETE, PUT, OPTIONS
-  Access-Control-Allow-Headers: Origin, Authorization, Accept
-  Access-Control-Allow-Credentials: true
-
-  {
-    "id": 1,
-    "name": "doggie",
-    "tag": "dog"
-  }
-  ```
