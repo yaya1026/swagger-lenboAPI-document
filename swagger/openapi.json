@@ -48,39 +48,6 @@
   ],
   "paths": {
     "/api/v1/users": {
-      "get": {
-        "tags": [
-          "User"
-        ],
-        "summary": "ユーザーの一覧取得",
-        "description": "",
-        "operationId": "getUsers",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "header",
-            "name": "token",
-            "type": "string",
-            "description": "firebase token"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/User"
-              }
-            }
-          }
-        }
-      },
       "post": {
         "tags": [
           "User"
@@ -243,7 +210,7 @@
         "tags": [
           "User"
         ],
-        "summary": "友達検索",
+        "summary": "友達検索用",
         "description": "",
         "operationId": "searchUser",
         "consumes": [
@@ -299,7 +266,7 @@
         "tags": [
           "Item"
         ],
-        "summary": "貸せるよアイテム",
+        "summary": "貸せるよアイテムの作成",
         "description": "",
         "operationId": "createLendableItem",
         "consumes": [
@@ -354,7 +321,8 @@
         "tags": [
           "Item"
         ],
-        "summary": "アイテムの取得",
+        "summary": "idによるアイテムの取得",
+        "description": "友達だったら見せる",
         "operationId": "getItem",
         "consumes": [
           "application/json"
@@ -482,13 +450,92 @@
         }
       }
     },
+    "/api/v1/reservation_items": {
+      "get": {
+        "tags": [
+          "Item"
+        ],
+        "summary": "自分の予約しているアイテムの一覧",
+        "description": "budge_num はメッセージの数",
+        "operationId": "getReservationItems",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "type": "string",
+            "description": "firebase token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "item": {
+                  "$ref": "#/definitions/ItemDetail"
+                },
+                "budge_num": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/lendable_items": {
       "get": {
         "tags": [
           "Item"
         ],
-        "summary": "貸せるアイテムの一覧取得",
+        "summary": "自分の貸せるアイテムの一覧",
         "operationId": "getLendableItems",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "type": "string",
+            "description": "firebase token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "item": {
+                  "$ref": "#/definitions/ItemDetail"
+                },
+                "budge_num": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/lendable_items/:user_id": {
+      "get": {
+        "tags": [
+          "Item"
+        ],
+        "summary": "自分のidを入れると、友達全員のの貸せるよItem、友達のを入れると友達一人の貸せるよItemの一覧",
+        "operationId": "getLendableItem",
         "consumes": [
           "application/json"
         ],
@@ -1059,14 +1106,49 @@
         }
       }
     },
-    "/api/v1/message/:id": {
+    "/api/v1/messages/:id": {
       "get": {
         "tags": [
           "Message"
         ],
-        "summary": "Transactionのメッセージの取得",
+        "summary": "Reservationのidからのメッセージの取得",
         "description": "",
-        "operationId": "getMessage",
+        "operationId": "getReservationMessage",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "type": "string",
+            "description": "firebase token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Message"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/transaction_message/:id": {
+      "get": {
+        "tags": [
+          "Message"
+        ],
+        "summary": "Transactionのidからのメッセージの取得",
+        "description": "",
+        "operationId": "getTransactionMessage",
         "consumes": [
           "application/json"
         ],
@@ -1513,18 +1595,18 @@
           "type": "integer",
           "format": "int64"
         },
-        "transaction_id": {
+        "item_id": {
           "type": "integer",
-          "description": "transactionモデルに紐づく"
+          "description": "Itemモデルに紐づく"
         },
-        "user_id": {
+        "sender_id": {
+          "type": "integer"
+        },
+        "receiver_id": {
           "type": "integer"
         },
         "message": {
           "type": "string"
-        },
-        "admin": {
-          "type": "boolean"
         },
         "created_at": {
           "type": "string"
