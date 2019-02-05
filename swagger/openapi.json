@@ -853,7 +853,7 @@
         "tags": [
           "Transaction"
         ],
-        "summary": "貸している取引の取得",
+        "summary": "貸している取引一覧",
         "description": "",
         "operationId": "getLenderTransaction",
         "consumes": [
@@ -915,7 +915,7 @@
         "tags": [
           "Transaction"
         ],
-        "summary": "借りている取引の取得",
+        "summary": "借りている取引一覧",
         "description": "",
         "operationId": "getBorrowerTransaction",
         "consumes": [
@@ -1111,7 +1111,7 @@
         "tags": [
           "Message"
         ],
-        "summary": "Reservationのidからのメッセージの取得",
+        "summary": "Reservationのidからのメッセージ一覧",
         "description": "",
         "operationId": "getReservationMessage",
         "consumes": [
@@ -1146,7 +1146,7 @@
         "tags": [
           "Message"
         ],
-        "summary": "Transactionのidからのメッセージの取得",
+        "summary": "Transactionのidからのメッセージ一覧",
         "description": "",
         "operationId": "getTransactionMessage",
         "consumes": [
@@ -1181,7 +1181,7 @@
         "tags": [
           "Relationship"
         ],
-        "summary": "友達の一覧取得",
+        "summary": "友達の一覧",
         "description": "",
         "operationId": "getRelationships",
         "consumes": [
