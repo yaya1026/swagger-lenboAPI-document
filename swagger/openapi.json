@@ -85,23 +85,16 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "integer",
-                  "format": "int64"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "profile_img": {
-                  "type": "string"
-                }
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
               }
             }
           }
         }
-      },
+      }
+    },
+    "/api/v1/users/:id": {
       "patch": {
         "tags": [
           "User"
@@ -139,25 +132,14 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "integer",
-                  "format": "int64"
-                },
-                "name": {
-                  "example": "kobasato34"
-                },
-                "profile_img": {
-                  "example": "http://~~"
-                }
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
               }
             }
           }
         }
-      }
-    },
-    "/api/v1/user_info": {
+      },
       "get": {
         "tags": [
           "User"
@@ -182,31 +164,17 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "profile_img": {
-                  "type": "string"
-                },
-                "lent_num": {
-                  "type": "integer"
-                },
-                "borrow_num": {
-                  "type": "integer"
-                },
-                "over_deadline_num": {
-                  "type": "integer"
-                }
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
               }
             }
           }
         }
       }
     },
-    "/api/v1/users/search": {
-      "post": {
+    "/api/v1/friends/:search_name": {
+      "get": {
         "tags": [
           "User"
         ],
@@ -225,36 +193,15 @@
             "name": "token",
             "type": "string",
             "description": "firebase token"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "properties": {
-                "search_name": {
-                  "type": "string",
-                  "example": "yaya"
-                }
-              }
-            }
           }
         ],
         "responses": {
           "200": {
             "description": "Success",
             "schema": {
-              "type": "object",
-              "properties": {
-                "friend_id": {
-                  "type": "integer",
-                  "format": "int64"
-                },
-                "friend_name": {
-                  "type": "string"
-                },
-                "friend_profile_img": {
-                  "type": "string"
-                }
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
               }
             }
           }
@@ -309,7 +256,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/ItemDetail"
+                "$ref": "#/definitions/Item"
               }
             }
           }
@@ -344,7 +291,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/ItemDetail"
+                "$ref": "#/definitions/Item"
               }
             }
           }
@@ -397,19 +344,55 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/ItemDetail"
+                "$ref": "#/definitions/Item"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Item"
+        ],
+        "summary": "貸せるよアイテムの削除",
+        "description": "",
+        "operationId": "DeleteItem",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "type": "string",
+            "description": "firebase token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "delete": {
+                  "type": "string",
+                  "example": "delete"
+                }
               }
             }
           }
         }
       }
     },
-    "/api/v1/update_lendable": {
+    "/api/v1/lendable_update/:id": {
       "patch": {
         "tags": [
           "Item"
         ],
-        "summary": "貸せるよアイテムの編集",
+        "summary": "貸せるよ状態の編集",
         "description": "",
         "operationId": "updateLendable",
         "consumes": [
@@ -443,7 +426,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/ItemDetail"
+                "$ref": "#/definitions/Item"
               }
             }
           }
@@ -456,7 +439,7 @@
           "Item"
         ],
         "summary": "自分の予約しているアイテムの一覧",
-        "description": "budge_num はメッセージの数",
+        "description": "",
         "operationId": "getReservationItems",
         "consumes": [
           "application/json"
@@ -479,10 +462,7 @@
               "type": "object",
               "properties": {
                 "item": {
-                  "$ref": "#/definitions/ItemDetail"
-                },
-                "budge_num": {
-                  "type": "integer"
+                  "$ref": "#/definitions/Item"
                 }
               }
             }
@@ -518,10 +498,7 @@
               "type": "object",
               "properties": {
                 "item": {
-                  "$ref": "#/definitions/ItemDetail"
-                },
-                "budge_num": {
-                  "type": "integer"
+                  "$ref": "#/definitions/Item"
                 }
               }
             }
@@ -529,7 +506,7 @@
         }
       }
     },
-    "/api/v1/lendable_items/:user_id": {
+    "/api/v1/lendable_items/:id": {
       "get": {
         "tags": [
           "Item"
@@ -557,7 +534,7 @@
               "type": "object",
               "properties": {
                 "item": {
-                  "$ref": "#/definitions/ItemDetail"
+                  "$ref": "#/definitions/Item"
                 },
                 "budge_num": {
                   "type": "integer"
@@ -602,6 +579,10 @@
                   "type": "string",
                   "example": "http://~~~~"
                 },
+                "description": {
+                  "type": "string",
+                  "example": "返してね"
+                },
                 "qr_hash": {
                   "type": "string",
                   "example": "dakjfdlkajgldkajgldka"
@@ -620,33 +601,82 @@
             "schema": {
               "type": "object",
               "properties": {
-                "id": {
-                  "type": "integer",
-                  "description": "transactionのid"
-                },
-                "item": {
-                  "$ref": "#/definitions/ItemResponse"
-                },
-                "deadline": {
-                  "example": "2018-01-01"
-                },
-                "status": {
-                  "type": "integer"
-                },
-                "borrower_user": {
-                  "$ref": "#/definitions/UserResponse"
-                },
-                "message_num": {
-                  "type": "integer"
-                },
-                "fire_budge": {
-                  "type": "integer"
-                },
-                "created_at": {
-                  "example": "2018-01-01"
-                },
-                "updated_at": {
-                  "example": "2018-01-01"
+                "transaction": {
+                  "$ref": "#/definitions/Transaction"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/finished_update/:id": {
+      "patch": {
+        "tags": [
+          "Transaction"
+        ],
+        "summary": "取引の完了日時の更新",
+        "description": "",
+        "operationId": "updateTransactionStatus",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "type": "string",
+            "description": "firebase token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "transaction": {
+                  "$ref": "#/definitions/Transaction"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/transactions/:id": {
+      "get": {
+        "tags": [
+          "Transaction"
+        ],
+        "summary": "取引の取得",
+        "description": "",
+        "operationId": "getTransaction",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "type": "string",
+            "description": "firebase token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "transaction": {
+                  "$ref": "#/definitions/Transaction"
                 }
               }
             }
@@ -704,96 +734,21 @@
             "schema": {
               "type": "object",
               "properties": {
-                "id": {
-                  "type": "integer",
-                  "description": "transactionのid"
-                },
-                "item": {
-                  "$ref": "#/definitions/ItemResponse"
-                },
-                "deadline": {
-                  "example": "2018-01-01"
-                },
-                "status": {
-                  "type": "integer"
-                },
-                "borrower_user": {
-                  "$ref": "#/definitions/UserResponse"
-                },
-                "message_num": {
-                  "type": "integer"
-                },
-                "fire_budge": {
-                  "type": "integer"
-                },
-                "created_at": {
-                  "example": "2018-01-01"
-                },
-                "updated_at": {
-                  "example": "2018-01-01"
+                "transaction": {
+                  "$ref": "#/definitions/Transaction"
                 }
               }
             }
           }
         }
-      }
-    },
-    "/api/v1/transaction_status/:id": {
-      "patch": {
+      },
+      "delete": {
         "tags": [
           "Transaction"
         ],
-        "summary": "取引のstatus編集",
+        "summary": "取引の削除",
         "description": "",
-        "operationId": "updateTransactionStatus",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "header",
-            "name": "token",
-            "type": "string",
-            "description": "firebase token"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "properties": {
-                "status": {
-                  "type": "integer"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "update": {
-                  "example": true
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/transactions/:id": {
-      "get": {
-        "tags": [
-          "Transaction"
-        ],
-        "summary": "取引の取得",
-        "description": "",
-        "operationId": "getTransaction",
+        "operationId": "deleteTransaction",
         "consumes": [
           "application/json"
         ],
@@ -814,33 +769,9 @@
             "schema": {
               "type": "object",
               "properties": {
-                "id": {
-                  "type": "integer",
-                  "description": "transactionのid"
-                },
-                "item": {
-                  "$ref": "#/definitions/ItemResponse"
-                },
-                "deadline": {
-                  "example": "2018-01-01"
-                },
-                "status": {
-                  "type": "integer"
-                },
-                "borrower_user": {
-                  "$ref": "#/definitions/UserResponse"
-                },
-                "message_num": {
-                  "type": "integer"
-                },
-                "fire_budge": {
-                  "type": "integer"
-                },
-                "created_at": {
-                  "example": "2018-01-01"
-                },
-                "updated_at": {
-                  "example": "2018-01-01"
+                "delete": {
+                  "type": "string",
+                  "example": "delete"
                 }
               }
             }
@@ -876,33 +807,8 @@
             "schema": {
               "type": "object",
               "properties": {
-                "id": {
-                  "type": "integer",
-                  "description": "transactionのid"
-                },
-                "item": {
-                  "$ref": "#/definitions/ItemResponse"
-                },
-                "deadline": {
-                  "example": "2018-01-01"
-                },
-                "status": {
-                  "type": "integer"
-                },
-                "borrower_user": {
-                  "$ref": "#/definitions/UserResponse"
-                },
-                "message_num": {
-                  "type": "integer"
-                },
-                "fire_budge": {
-                  "type": "integer"
-                },
-                "created_at": {
-                  "example": "2018-01-01"
-                },
-                "updated_at": {
-                  "example": "2018-01-01"
+                "transaction": {
+                  "$ref": "#/definitions/Transaction"
                 }
               }
             }
@@ -938,33 +844,8 @@
             "schema": {
               "type": "object",
               "properties": {
-                "id": {
-                  "type": "integer",
-                  "description": "transactionのid"
-                },
-                "item": {
-                  "$ref": "#/definitions/ItemResponse"
-                },
-                "deadline": {
-                  "example": "2018-01-01"
-                },
-                "status": {
-                  "type": "integer"
-                },
-                "borrower_user": {
-                  "$ref": "#/definitions/UserResponse"
-                },
-                "message_num": {
-                  "type": "integer"
-                },
-                "fire_budge": {
-                  "type": "integer"
-                },
-                "created_at": {
-                  "example": "2018-01-01"
-                },
-                "updated_at": {
-                  "example": "2018-01-01"
+                "transaction": {
+                  "$ref": "#/definitions/Transaction"
                 }
               }
             }
@@ -1049,7 +930,8 @@
               "type": "object",
               "properties": {
                 "create": {
-                  "type": "boolean"
+                  "type": "string",
+                  "example": "create"
                 }
               }
             }
@@ -1057,7 +939,7 @@
         }
       }
     },
-    "/api/v1/message": {
+    "/api/v1/messages": {
       "post": {
         "tags": [
           "Message"
@@ -1141,7 +1023,7 @@
         }
       }
     },
-    "/api/v1/transaction_message/:id": {
+    "/api/v1/transaction_messages/:id": {
       "get": {
         "tags": [
           "Message"
@@ -1161,6 +1043,55 @@
             "name": "token",
             "type": "string",
             "description": "firebase token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Message"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/reservation_messages": {
+      "post": {
+        "tags": [
+          "Message"
+        ],
+        "summary": "reservationからメッセージの作成",
+        "description": "",
+        "operationId": "createReservationMessage",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "type": "string",
+            "description": "firebase token"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "properties": {
+                "reservation_id": {
+                  "example": 0
+                },
+                "message": {
+                  "example": "返してね"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -1202,17 +1133,9 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "object",
-              "properties": {
-                "friend_id": {
-                  "example": 1
-                },
-                "friend_name": {
-                  "example": "satoshi"
-                },
-                "friend_profile_img": {
-                  "example": "http://~~~"
-                }
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Relationship"
               }
             }
           }
@@ -1243,8 +1166,8 @@
             "name": "body",
             "schema": {
               "properties": {
-                "friend_id": {
-                  "type": "integer"
+                "search_name": {
+                  "type": "string"
                 }
               }
             }
@@ -1254,16 +1177,16 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "object",
-              "properties": {
-                "create": {
-                  "type": "boolean"
-                }
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Relationship"
               }
             }
           }
         }
-      },
+      }
+    },
+    "/api/v1/relationships/:id": {
       "delete": {
         "tags": [
           "Relationship"
@@ -1283,35 +1206,22 @@
             "name": "token",
             "type": "string",
             "description": "firebase token"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "properties": {
-                "friend_id": {
-                  "type": "integer"
-                }
-              }
-            }
           }
         ],
         "responses": {
           "200": {
             "description": "Success",
             "schema": {
-              "type": "object",
-              "properties": {
-                "destroy": {
-                  "type": "boolean"
-                }
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Relationship"
               }
             }
           }
         }
       }
     },
-    "/api/v1/relationships/approve": {
+    "/api/v1/relationships/:id/approve": {
       "patch": {
         "tags": [
           "Relationship"
@@ -1331,14 +1241,49 @@
             "name": "token",
             "type": "string",
             "description": "firebase token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Relationship"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/reservations": {
+      "post": {
+        "tags": [
+          "Reservation"
+        ],
+        "summary": "予約の作成",
+        "description": "",
+        "operationId": "createReservation",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "type": "string",
+            "description": "firebase token"
           },
           {
             "in": "body",
             "name": "body",
             "schema": {
               "properties": {
-                "friend_id": {
-                  "type": "integer"
+                "item_id": {
+                  "example": 0
                 }
               }
             }
@@ -1348,11 +1293,112 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "object",
-              "properties": {
-                "update": {
-                  "type": "boolean"
-                }
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Reservation"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Reservation"
+        ],
+        "summary": "自分の予約一覧",
+        "description": "",
+        "operationId": "getReservations",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "type": "string",
+            "description": "firebase token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Reservation"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/reservations/:item_id": {
+      "get": {
+        "tags": [
+          "Reservation"
+        ],
+        "summary": "item(id)に関する予約の一覧",
+        "description": "",
+        "operationId": "getReservationsByItemID",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "type": "string",
+            "description": "firebase token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Reservation"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/reservations/:id": {
+      "delete": {
+        "tags": [
+          "Reservation"
+        ],
+        "summary": "予約の削除",
+        "description": "",
+        "operationId": "deleteReservations",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "type": "string",
+            "description": "firebase token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Reservation"
               }
             }
           }
@@ -1384,57 +1430,12 @@
           "type": "integer",
           "format": "int64"
         },
-        "from_user_id": {
-          "type": "integer",
-          "description": "Userモデルに紐づく"
-        },
-        "to_user_id": {
-          "type": "integer",
-          "description": "Userモデルに紐づく"
-        },
-        "relationship_status": {
-          "type": "boolean",
-          "description": "false: 非承認, true: 承認"
-        },
-        "created_at": {
-          "type": "string"
-        },
-        "updated_at": {
-          "type": "string"
+        "friend_user": {
+          "$ref": "#/definitions/User"
         }
       },
       "xml": {
         "name": "Relationship"
-      }
-    },
-    "Manager": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "email": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
-        },
-        "password_confirmation": {
-          "type": "string"
-        },
-        "admin_flg": {
-          "type": "boolean"
-        },
-        "created_at": {
-          "type": "string"
-        },
-        "updated_at": {
-          "type": "string"
-        }
-      },
-      "xml": {
-        "name": "Manager"
       }
     },
     "User": {
@@ -1447,67 +1448,25 @@
         "name": {
           "type": "string"
         },
-        "profile_img": {
-          "type": "string"
-        },
-        "uid": {
-          "type": "string",
-          "description": "firebaseから取得できるID"
-        },
-        "admin": {
-          "type": "boolean"
-        },
         "search_name": {
           "type": "string",
           "description": "友達検索用"
         },
-        "created_at": {
-          "type": "string"
-        },
-        "updated_at": {
-          "type": "string"
-        }
-      },
-      "xml": {
-        "name": "User"
-      }
-    },
-    "UserResponse": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "name": {
-          "type": "string"
-        },
         "profile_img": {
           "type": "string"
+        },
+        "lent_num": {
+          "type": "integer"
+        },
+        "borrow_num": {
+          "type": "integer"
+        },
+        "over_deadline_num": {
+          "type": "integer"
         }
       },
       "xml": {
         "name": "User"
-      }
-    },
-    "ItemResponse": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer"
-        },
-        "name": {
-          "type": "string"
-        },
-        "item_img": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "user": {
-          "$ref": "#/definitions/UserResponse"
-        }
       }
     },
     "Item": {
@@ -1520,41 +1479,11 @@
         "name": {
           "type": "string"
         },
-        "item_img": {
+        "image_url": {
           "type": "string"
         },
-        "user_id": {
-          "type": "integer",
-          "description": "Userモデルに紐づく"
-        },
-        "description": {
-          "type": "string"
-        },
-        "lendable": {
-          "type": "boolean"
-        },
-        "created_at": {
-          "type": "string"
-        },
-        "updated_at": {
-          "type": "string"
-        }
-      },
-      "xml": {
-        "name": "Item"
-      }
-    },
-    "ItemDetail": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer"
-        },
-        "name": {
-          "type": "string"
-        },
-        "item_img": {
-          "type": "string"
+        "user": {
+          "$ref": "#/definitions/User"
         },
         "description": {
           "type": "string"
@@ -1567,20 +1496,7 @@
     "Qr": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
         "qr_hash": {
-          "type": "string"
-        },
-        "user_id": {
-          "type": "integer"
-        },
-        "created_at": {
-          "type": "string"
-        },
-        "updated_at": {
           "type": "string"
         }
       },
@@ -1595,47 +1511,18 @@
           "type": "integer",
           "format": "int64"
         },
-        "item_id": {
-          "type": "integer",
-          "description": "Itemモデルに紐づく"
-        },
-        "sender_id": {
-          "type": "integer"
-        },
-        "receiver_id": {
-          "type": "integer"
-        },
         "message": {
           "type": "string"
         },
-        "created_at": {
-          "type": "string"
+        "sender_user": {
+          "$ref": "#/definitions/User"
         },
-        "updated_at": {
+        "created_at": {
           "type": "string"
         }
       },
       "xml": {
         "name": "Message"
-      }
-    },
-    "FcmToken": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "fcm_token": {
-          "type": "string"
-        },
-        "user_id": {
-          "type": "integer",
-          "format": "int64"
-        }
-      },
-      "xml": {
-        "name": "FcmToken"
       }
     },
     "Transaction": {
@@ -1645,23 +1532,23 @@
           "type": "integer",
           "format": "int64"
         },
-        "deadline": {
-          "type": "string"
-        },
-        "status": {
-          "type": "integer",
-          "description": "1: 取引中 2: 予約中 3: 取引完了"
-        },
         "item": {
           "$ref": "#/definitions/Item"
         },
-        "lender_id": {
-          "type": "integer",
-          "description": "Userモデルに紐づく貸し手のid"
+        "deadline": {
+          "type": "string"
         },
-        "borrower_id": {
-          "type": "integer",
-          "description": "Userモデルに紐づく借り手のid"
+        "borrower_user": {
+          "$ref": "#/definitions/User"
+        },
+        "message_num": {
+          "type": "integer"
+        },
+        "fire_budge": {
+          "type": "boolean"
+        },
+        "finished_at": {
+          "type": "string"
         },
         "created_at": {
           "type": "string"
@@ -1672,6 +1559,24 @@
       },
       "xml": {
         "name": "Transaction"
+      }
+    },
+    "Reservation": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "item": {
+          "$ref": "#/definitions/Item"
+        },
+        "reservation_user": {
+          "$ref": "#/definitions/User"
+        }
+      },
+      "xml": {
+        "name": "FcmToken"
       }
     }
   },
