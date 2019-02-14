@@ -1573,6 +1573,10 @@
         },
         "reservation_user": {
           "$ref": "#/definitions/User"
+        },
+        "budge_num": {
+          "type": "integer",
+          "format": "int64"
         }
       },
       "xml": {
