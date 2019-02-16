@@ -144,8 +144,42 @@
         "tags": [
           "User"
         ],
-        "summary": "マイページのユーザー情報取得",
+        "summary": "相手のユーザー情報取得",
         "operationId": "getUserInfo",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "type": "string",
+            "description": "firebase token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user_info": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "マイページのユーザー情報取得",
+        "operationId": "getMyUserInfo",
         "consumes": [
           "application/json"
         ],
@@ -1455,6 +1489,9 @@
         "profile_img": {
           "type": "string"
         },
+        "description": {
+          "type": "string"
+        },
         "lent_num": {
           "type": "integer"
         },
@@ -1513,6 +1550,9 @@
         },
         "message": {
           "type": "string"
+        },
+        "already_read": {
+          "type": "boolean"
         },
         "sender_user": {
           "$ref": "#/definitions/User"
