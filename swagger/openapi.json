@@ -1643,6 +1643,9 @@
         },
         "reservation_user": {
           "$ref": "#/definitions/User"
+        },
+        "budge_num": {
+          "type": "integer"
         }
       },
       "xml": {
