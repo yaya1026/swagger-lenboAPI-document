@@ -1290,14 +1290,14 @@
         }
       }
     },
-    "/api/v1/reservations": {
-      "post": {
+    "/api/v1/relationships/requests": {
+      "get": {
         "tags": [
-          "Reservation"
+          "Relationship"
         ],
-        "summary": "予約の作成",
+        "summary": "受信した友達リクエスト",
         "description": "",
-        "operationId": "createReservation",
+        "operationId": "getReceiveRequest",
         "consumes": [
           "application/json"
         ],
@@ -1310,322 +1310,390 @@
             "name": "token",
             "type": "string",
             "description": "firebase token"
-          },
-          {
-            "in": "body",
-            "name": "body",
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
             "schema": {
-              "properties": {
-                "item_id": {
-                  "example": 0
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Relationship"
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/relationships/myrequests": {
+        "get": {
+          "tags": [
+            "Relationship"
+          ],
+          "summary": "申請中の友達リクエスト",
+          "description": "",
+          "operationId": "getMyRequest",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "in": "header",
+              "name": "token",
+              "type": "string",
+              "description": "firebase token"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Relationship"
                 }
               }
             }
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Reservation"
+        },
+        "/api/v1/reservations": {
+          "post": {
+            "tags": [
+              "Reservation"
+            ],
+            "summary": "予約の作成",
+            "description": "",
+            "operationId": "createReservation",
+            "consumes": [
+              "application/json"
+            ],
+            "produces": [
+              "application/json"
+            ],
+            "parameters": [
+              {
+                "in": "header",
+                "name": "token",
+                "type": "string",
+                "description": "firebase token"
+              },
+              {
+                "in": "body",
+                "name": "body",
+                "schema": {
+                  "properties": {
+                    "item_id": {
+                      "example": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Success",
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Reservation"
+                  }
+                }
+              }
+            }
+          },
+          "get": {
+            "tags": [
+              "Reservation"
+            ],
+            "summary": "自分の予約一覧",
+            "description": "",
+            "operationId": "getReservations",
+            "consumes": [
+              "application/json"
+            ],
+            "produces": [
+              "application/json"
+            ],
+            "parameters": [
+              {
+                "in": "header",
+                "name": "token",
+                "type": "string",
+                "description": "firebase token"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Success",
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Reservation"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/api/v1/reservations/:item_id": {
+          "get": {
+            "tags": [
+              "Reservation"
+            ],
+            "summary": "item(id)に関する予約の一覧",
+            "description": "",
+            "operationId": "getReservationsByItemID",
+            "consumes": [
+              "application/json"
+            ],
+            "produces": [
+              "application/json"
+            ],
+            "parameters": [
+              {
+                "in": "header",
+                "name": "token",
+                "type": "string",
+                "description": "firebase token"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Success",
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Reservation"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/api/v1/reservations/:id": {
+          "delete": {
+            "tags": [
+              "Reservation"
+            ],
+            "summary": "予約の削除",
+            "description": "",
+            "operationId": "deleteReservations",
+            "consumes": [
+              "application/json"
+            ],
+            "produces": [
+              "application/json"
+            ],
+            "parameters": [
+              {
+                "in": "header",
+                "name": "token",
+                "type": "string",
+                "description": "firebase token"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Success",
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Reservation"
+                  }
+                }
               }
             }
           }
         }
       },
-      "get": {
-        "tags": [
-          "Reservation"
-        ],
-        "summary": "自分の予約一覧",
-        "description": "",
-        "operationId": "getReservations",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "header",
-            "name": "token",
-            "type": "string",
-            "description": "firebase token"
+      "securityDefinitions": {
+        "petstore_auth": {
+          "type": "oauth2",
+          "authorizationUrl": "http://petstore.swagger.io/oauth/dialog",
+          "flow": "implicit",
+          "scopes": {
+            "write:pets": "modify pets in your account",
+            "read:pets": "read your pets"
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Reservation"
-              }
+        },
+        "api_key": {
+          "type": "apiKey",
+          "name": "api_key",
+          "in": "header"
+        }
+      },
+      "definitions": {
+        "Relationship": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "friend_user": {
+              "$ref": "#/definitions/User"
             }
+          },
+          "xml": {
+            "name": "Relationship"
+          }
+        },
+        "User": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "name": {
+              "type": "string"
+            },
+            "search_name": {
+              "type": "string",
+              "description": "友達検索用"
+            },
+            "profile_img": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "lent_num": {
+              "type": "integer"
+            },
+            "borrow_num": {
+              "type": "integer"
+            },
+            "over_deadline_num": {
+              "type": "integer"
+            }
+          },
+          "xml": {
+            "name": "User"
+          }
+        },
+        "Item": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "name": {
+              "type": "string"
+            },
+            "image_url": {
+              "type": "string"
+            },
+            "user": {
+              "$ref": "#/definitions/User"
+            },
+            "description": {
+              "type": "string"
+            }
+          },
+          "xml": {
+            "name": "Item"
+          }
+        },
+        "Qr": {
+          "type": "object",
+          "properties": {
+            "qr_hash": {
+              "type": "string"
+            }
+          },
+          "xml": {
+            "name": "Qr"
+          }
+        },
+        "Message": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "message": {
+              "type": "string"
+            },
+            "already_read": {
+              "type": "boolean"
+            },
+            "sender_user": {
+              "$ref": "#/definitions/User"
+            },
+            "created_at": {
+              "type": "string"
+            }
+          },
+          "xml": {
+            "name": "Message"
+          }
+        },
+        "Transaction": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "item": {
+              "$ref": "#/definitions/Item"
+            },
+            "deadline": {
+              "type": "string"
+            },
+            "borrower_user": {
+              "$ref": "#/definitions/User"
+            },
+            "message_num": {
+              "type": "integer"
+            },
+            "fire_budge": {
+              "type": "boolean"
+            },
+            "finished_at": {
+              "type": "string"
+            },
+            "created_at": {
+              "type": "string"
+            },
+            "updated_at": {
+              "type": "string"
+            }
+          },
+          "xml": {
+            "name": "Transaction"
+          }
+        },
+        "Reservation": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "item": {
+              "$ref": "#/definitions/Item"
+            },
+            "reservation_user": {
+              "$ref": "#/definitions/User"
+            },
+            "budge_num": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          "xml": {
+            "name": "FcmToken"
           }
         }
-      }
-    },
-    "/api/v1/reservations/:item_id": {
-      "get": {
-        "tags": [
-          "Reservation"
-        ],
-        "summary": "item(id)に関する予約の一覧",
-        "description": "",
-        "operationId": "getReservationsByItemID",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "header",
-            "name": "token",
-            "type": "string",
-            "description": "firebase token"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Reservation"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/reservations/:id": {
-      "delete": {
-        "tags": [
-          "Reservation"
-        ],
-        "summary": "予約の削除",
-        "description": "",
-        "operationId": "deleteReservations",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "header",
-            "name": "token",
-            "type": "string",
-            "description": "firebase token"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Reservation"
-              }
-            }
-          }
-        }
+      },
+      "externalDocs": {
+        "description": "Find out more about Swagger",
+        "url": "http://swagger.io"
       }
     }
-  },
-  "securityDefinitions": {
-    "petstore_auth": {
-      "type": "oauth2",
-      "authorizationUrl": "http://petstore.swagger.io/oauth/dialog",
-      "flow": "implicit",
-      "scopes": {
-        "write:pets": "modify pets in your account",
-        "read:pets": "read your pets"
-      }
-    },
-    "api_key": {
-      "type": "apiKey",
-      "name": "api_key",
-      "in": "header"
-    }
-  },
-  "definitions": {
-    "Relationship": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "friend_user": {
-          "$ref": "#/definitions/User"
-        }
-      },
-      "xml": {
-        "name": "Relationship"
-      }
-    },
-    "User": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "name": {
-          "type": "string"
-        },
-        "search_name": {
-          "type": "string",
-          "description": "友達検索用"
-        },
-        "profile_img": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "lent_num": {
-          "type": "integer"
-        },
-        "borrow_num": {
-          "type": "integer"
-        },
-        "over_deadline_num": {
-          "type": "integer"
-        }
-      },
-      "xml": {
-        "name": "User"
-      }
-    },
-    "Item": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "name": {
-          "type": "string"
-        },
-        "image_url": {
-          "type": "string"
-        },
-        "user": {
-          "$ref": "#/definitions/User"
-        },
-        "description": {
-          "type": "string"
-        }
-      },
-      "xml": {
-        "name": "Item"
-      }
-    },
-    "Qr": {
-      "type": "object",
-      "properties": {
-        "qr_hash": {
-          "type": "string"
-        }
-      },
-      "xml": {
-        "name": "Qr"
-      }
-    },
-    "Message": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "message": {
-          "type": "string"
-        },
-        "already_read": {
-          "type": "boolean"
-        },
-        "sender_user": {
-          "$ref": "#/definitions/User"
-        },
-        "created_at": {
-          "type": "string"
-        }
-      },
-      "xml": {
-        "name": "Message"
-      }
-    },
-    "Transaction": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "item": {
-          "$ref": "#/definitions/Item"
-        },
-        "deadline": {
-          "type": "string"
-        },
-        "borrower_user": {
-          "$ref": "#/definitions/User"
-        },
-        "message_num": {
-          "type": "integer"
-        },
-        "fire_budge": {
-          "type": "boolean"
-        },
-        "finished_at": {
-          "type": "string"
-        },
-        "created_at": {
-          "type": "string"
-        },
-        "updated_at": {
-          "type": "string"
-        }
-      },
-      "xml": {
-        "name": "Transaction"
-      }
-    },
-    "Reservation": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "item": {
-          "$ref": "#/definitions/Item"
-        },
-        "reservation_user": {
-          "$ref": "#/definitions/User"
-        },
-        "budge_num": {
-          "type": "integer",
-          "format": "int64"
-        }
-      },
-      "xml": {
-        "name": "FcmToken"
-      }
-    }
-  },
-  "externalDocs": {
-    "description": "Find out more about Swagger",
-    "url": "http://swagger.io"
-  }
-}
