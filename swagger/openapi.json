@@ -1533,6 +1533,9 @@
         },
         "over_deadline_num": {
           "type": "integer"
+        },
+        "transaction_num": {
+          "type": "integer"
         }
       },
       "xml": {
