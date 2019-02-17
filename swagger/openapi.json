@@ -1191,7 +1191,7 @@
         "tags": [
           "Relationship"
         ],
-        "summary": "友達の削除",
+        "summary": "友達の削除(idは友達のid)",
         "description": "",
         "operationId": "destroyRelationship",
         "consumes": [
