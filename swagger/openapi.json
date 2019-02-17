@@ -67,18 +67,6 @@
             "name": "token",
             "type": "string",
             "description": "firebase token"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "properties": {
-                "profile_img": {
-                  "type": "string",
-                  "example": "http://~~~~"
-                }
-              }
-            }
           }
         ],
         "responses": {
