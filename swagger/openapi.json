@@ -1547,7 +1547,8 @@
         },
         "status": {
           "type": "integer",
-          "format": "int64"
+          "format": "int64",
+          "description": "0:友達じゃない 1: 申請中 2:友達"
         }
       },
       "xml": {
