@@ -67,6 +67,18 @@
             "name": "token",
             "type": "string",
             "description": "firebase token"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "properties": {
+                "profile_img": {
+                  "type": "string",
+                  "example": "http://~~~~"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -189,7 +201,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/User"
+                "$ref": "#/definitions/FriendUser"
               }
             }
           }
@@ -1521,13 +1533,25 @@
         },
         "over_deadline_num": {
           "type": "integer"
-        },
-        "transaction_num": {
-          "type": "integer"
         }
       },
       "xml": {
         "name": "User"
+      }
+    },
+    "FriendUser": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/User"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "xml": {
+        "name": "Relationship"
       }
     },
     "Item": {
@@ -1634,9 +1658,6 @@
         },
         "reservation_user": {
           "$ref": "#/definitions/User"
-        },
-        "budge_num": {
-          "type": "integer"
         }
       },
       "xml": {
