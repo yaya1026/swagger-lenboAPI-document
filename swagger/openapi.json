@@ -378,8 +378,8 @@
               "type": "object",
               "properties": {
                 "delete": {
-                  "type": "string",
-                  "example": "delete"
+                  "type": "boolean",
+                  "example": "true"
                 }
               }
             }
@@ -770,8 +770,8 @@
               "type": "object",
               "properties": {
                 "delete": {
-                  "type": "string",
-                  "example": "delete"
+                  "type": "boolean",
+                  "example": "true"
                 }
               }
             }
