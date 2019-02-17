@@ -1363,9 +1363,11 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Reservation"
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                }
               }
             }
           }
