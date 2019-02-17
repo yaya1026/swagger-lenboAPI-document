@@ -1477,6 +1477,77 @@
           }
         }
       }
+    },
+    "/api/v1/take_reservations": {
+      "get": {
+        "tags": [
+          "Reservation"
+        ],
+        "summary": "自分のされている予約一覧",
+        "description": "",
+        "operationId": "getTakeReservations",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "type": "string",
+            "description": "firebase token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Reservation"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/reservation_status/:item_id": {
+      "delete": {
+        "tags": [
+          "Reservation"
+        ],
+        "summary": "予約の状態確認",
+        "description": "予約がなければ0 あったらreservation idを返す",
+        "operationId": "getReservationStatus",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "type": "string",
+            "description": "firebase token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "properties": {
+                "reservation_id": {
+                  "example": 1
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "securityDefinitions": {
