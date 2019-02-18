@@ -854,6 +854,63 @@
         }
       }
     },
+    "/api/v1/transaction_from_reservation": {
+      "post": {
+        "tags": [
+          "Transaction"
+        ],
+        "summary": "予約から取引の作成",
+        "description": "",
+        "operationId": "createTransactionFromReservation",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "type": "string",
+            "description": "firebase token"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "properties": {
+                "reservation_id": {
+                  "type": "integer",
+                  "example": 1
+                },
+                "qr_hash": {
+                  "type": "string",
+                  "example": "dakjfdlkajgldkajgldka"
+                },
+                "deadline": {
+                  "type": "string",
+                  "example": "2018-01-01"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "transaction": {
+                  "$ref": "#/definitions/Transaction"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/qrs": {
       "post": {
         "tags": [
