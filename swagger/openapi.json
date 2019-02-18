@@ -378,8 +378,8 @@
               "type": "object",
               "properties": {
                 "delete": {
-                  "type": "boolean",
-                  "example": "true"
+                  "type": "string",
+                  "example": "delete"
                 }
               }
             }
@@ -610,7 +610,7 @@
         }
       }
     },
-    "/api/v1/finished_update/:id": {
+    "/api/v1/complete_transaction/:id": {
       "patch": {
         "tags": [
           "Transaction"
@@ -638,8 +638,9 @@
             "schema": {
               "type": "object",
               "properties": {
-                "transaction": {
-                  "$ref": "#/definitions/Transaction"
+                "delete": {
+                  "type": "string",
+                  "example": "true"
                 }
               }
             }
@@ -770,7 +771,7 @@
               "type": "object",
               "properties": {
                 "delete": {
-                  "type": "boolean",
+                  "type": "string",
                   "example": "true"
                 }
               }
