@@ -599,11 +599,9 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "object",
-              "properties": {
-                "transaction": {
-                  "$ref": "#/definitions/Transaction"
-                }
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Transaction"
               }
             }
           }
@@ -674,11 +672,9 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "object",
-              "properties": {
-                "transaction": {
-                  "$ref": "#/definitions/Transaction"
-                }
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Transaction"
               }
             }
           }
@@ -733,11 +729,9 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "object",
-              "properties": {
-                "transaction": {
-                  "$ref": "#/definitions/Transaction"
-                }
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Transaction"
               }
             }
           }
@@ -806,11 +800,9 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "object",
-              "properties": {
-                "transaction": {
-                  "$ref": "#/definitions/Transaction"
-                }
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Transaction"
               }
             }
           }
@@ -843,11 +835,9 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "object",
-              "properties": {
-                "transaction": {
-                  "$ref": "#/definitions/Transaction"
-                }
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Transaction"
               }
             }
           }
@@ -900,11 +890,9 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "object",
-              "properties": {
-                "transaction": {
-                  "$ref": "#/definitions/Transaction"
-                }
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Transaction"
               }
             }
           }
@@ -942,6 +930,41 @@
                 "qr_hash": {
                   "example": "idffadkljfadlk"
                 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/qrs/:qr_hash": {
+      "post": {
+        "tags": [
+          "Qr"
+        ],
+        "summary": "qr_hashをパラメータに渡すとUserを返すやつ",
+        "description": "",
+        "operationId": "getUserByQr",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "type": "string",
+            "description": "firebase token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
               }
             }
           }
